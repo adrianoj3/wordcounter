@@ -1,13 +1,20 @@
 package com.prz.wordcounter;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
+
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import org.jfree.chart.JFreeChart;
 
@@ -15,103 +22,112 @@ import org.jfree.chart.JFreeChart;
  * Hello world!
  *
  */
-public class App {
-	public String inputText;
-	public static List<String> words;
+public class App extends JFrame{
+	private static final long serialVersionUID = 1L;
+	private static final int windowHeight = 150;
+	private static final int windowWidth = 200;
+	private static Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 
-	/**
-	 * Metoda odpowidzialna za podzielenie wejsciowego tekstu na slowa.
-	 * 
-	 * @param inputString
-	 *            - caly tekst
-	 * @return zwraca list wszystkich slow
-	 */
-	public static List<String> splitInputIntoWords(String inputString) {
-		words = new ArrayList<String>();
-		String[] w = inputString.split(" |\\.|\\,|\\:|\\!|\\?|\\'|\"");
-		words = Arrays.asList(w);
-
-		ArrayList<String> word2 = new ArrayList<String>();
-		for (String item : words) {
-			if (item.length() != 0)
-				word2.add(item);
-		}
-
-		return word2;
+	public static File selectedFile;
+	
+	public App() {
+		setBasicFrameSettings();
+		setButton();
+		SetMainLayout();
+	}
+	
+	public File getSelectedFile() {
+		return selectedFile;
 	}
 
-	/**
-	 * Metoda odpowiedzialna za zliczenie ilosci wystapien slow o konkretnej
-	 * dlugosci.
-	 * 
-	 * @param words
-	 *            - lista zawierajaca wszystkie slowa
-	 * @return zwraca mape w postaci: key - dlugosc slowa value - ilosc
-	 *         wystapien slowa o danej dlugosci
-	 */
-	public static Map<Integer, Integer> countWords(ArrayList<String> words) {
-		Map<Integer, Integer> wordCountList = new HashMap<Integer, Integer>();
-		for (String word : words) {
-			if (wordCountList.get(word.length()) == null)
-				wordCountList.put(word.length(), 1);
-			else
-				wordCountList.put(word.length(),
-						wordCountList.get(word.length()) + 1);
+	public JFileChooser createFileChooser() {
+		JFileChooser fileChooser = new JFileChooser();
+		JLabel fileNameLabel = new JLabel();
+		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+		int result = fileChooser.showOpenDialog(this);
+		if (result == JFileChooser.APPROVE_OPTION) {
+		    selectedFile = fileChooser.getSelectedFile();
+		    System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+		    
+		    if(selectedFile != null) {
+		    	fileNameLabel.setText("Selected file: " + selectedFile.getName());
+		    } else {
+		    	
+		    }
+		    
+		    fileNameLabel.setBounds(windowWidth/2 - 40, 120, 200, 30);
+		    this.add(fileNameLabel);
 		}
-
-		return wordCountList;
-	}
-
-	public static String getData() {
-		File file = new File("C:\\src\\Java\\Eclipse\\Nowe\\wordcounter\\files\\data.txt");
-		StringBuffer stringBuffer = new StringBuffer();
 		
-		try {
-			@SuppressWarnings("resource")
-			Scanner scanner = new Scanner(file);
-			while(scanner.hasNextLine()) {
-				stringBuffer.append(scanner.nextLine());
+		return fileChooser;
+	}
+	
+	public void SetMainLayout() {
+		JLabel titleLabel = new JLabel("Word Counter");
+		titleLabel.setBounds(windowWidth/2 - 40, 30, 80, 30);
+		this.add(titleLabel);
+		
+		JLabel chooseLabel = new JLabel("Choose file with data:");
+		chooseLabel .setBounds(windowWidth/2 - 40, 60, 80, 30);
+		this.add(chooseLabel );
+	}
+	
+	public void setButton() {
+		JButton browseButton = new JButton("Browse");
+		browseButton.setBounds(windowWidth/2 - browseButton.getWidth()/2, 90, 100, 30);
+		browseButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					createFileChooser();
 			}
-						
-		} catch (FileNotFoundException e) {
-			System.out.println("File not found");
-			e.printStackTrace();
-		}
+		});
 		
-		String data = stringBuffer.toString();
-		return data;
+		
+		JButton generateButton = new JButton("Generate chart");
+		generateButton.setBounds(windowWidth/2 - generateButton.getWidth()/2, 200, 150, 30);
+		generateButton.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				generateChat();
+			}
+		});
+		
+		this.add(browseButton);
+		this.add(generateButton);
+		
+	}
+	
+	public void setBasicFrameSettings() {
+		setSize(windowHeight, windowWidth);
+		setVisible(true);
+		setTitle("Word Counter");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+		setMinimumSize(new Dimension(500, 400));
+		setResizable(false);
+		setLayout(null);
 	}
 
-	public static void main(String[] args) {
-
-		// ####### GENERATE CHART ####### 
-		//getData (file)
-		//split (String inputData)
-		//count (ArrayList slowa)
-		//makeChart(Map statistics)
-		
-		String data = getData();
-		List<String> slowa = new ArrayList<String>();
-		slowa = splitInputIntoWords(data);
-
-		for (String item : slowa) {
-			System.out.println(item);
-		}
-
-		Map<Integer, Integer> statistics = new HashMap<Integer, Integer>();
-
-		statistics = countWords((ArrayList<String>) slowa);
-		for (Map.Entry<Integer, Integer> item : statistics.entrySet()) {
-			System.out.println(item.getKey() + " literowych slow jest: "
-					+ item.getValue());
-		}
-
+	public void generateChat() {
 		BarChart chartCreator = new BarChart();
-		JFreeChart chart = chartCreator.createBarChart(statistics);
-		chartCreator.saveCharAsJPG(chart);
-		// GUI.setChart(chart);
-//		new ChartGUI(chart);
-		new MainGUI(chart);
+		DataProcesor dataProcesor = new DataProcesor();
+		List<String> wordsList = new ArrayList<String>();
+		Map<Integer, Integer> statistics = new HashMap<Integer, Integer>();
+		
+		if(selectedFile != null) {
+			String data = dataProcesor.getData(selectedFile);
+			wordsList = dataProcesor.splitInputIntoWords(data);
+			statistics = dataProcesor.countWords((ArrayList<String>) wordsList);
+			JFreeChart chart = chartCreator.createBarChart(statistics);
+			new ChartGUI(chart);
+		} else {
+			JOptionPane.showMessageDialog(this, "Choose the file first");
+		}
+	}
 
+	
+	public static void main(String[] args) {
+		
+		new App();
+		
 	}
 }

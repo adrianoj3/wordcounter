@@ -22,8 +22,8 @@ public class MainGUI extends JFrame {
 	public File selectedFile;
 	public JFreeChart chart;
 	
-	public MainGUI(JFreeChart chart) {
-		this.chart = chart;
+	public MainGUI() {
+//		this.chart = chart;
 		setBasicFrameSettings();
 		setButton();
 		SetMainLayout();
