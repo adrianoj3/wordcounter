@@ -17,7 +17,7 @@ public class ChartGUI extends JFrame {
 		setSize(1000, 600);
 		setVisible(true);
 		setTitle("Word Occurance Chart");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
 		this.add(createPanel(chart));
 	}
