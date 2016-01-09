@@ -7,6 +7,7 @@ import java.util.Map;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.StandardChartTheme;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
@@ -28,14 +29,14 @@ public class BarChart {
 			dataset.setValue(word.getValue(), axisY, word.getKey());
 		}
 
+		ChartFactory.setChartTheme(StandardChartTheme.createLegacyTheme());
 		JFreeChart chart = ChartFactory.createBarChart(
 				"Wystepowanie slow o okreslonej dlugosci", axisX, axisY,
 				dataset, PlotOrientation.VERTICAL, false, true, false);
-
 		return chart;
 	}
 
-	public void saveCharAsJPG(JFreeChart chart) {
+	public void saveCharAsJPG(JFreeChart chart, String fileName) {
 		File charFile = new File("BarChart.jpg");
 
 		try {
@@ -45,7 +46,7 @@ public class BarChart {
 			ChartUtilities
 					.saveChartAsJPEG(
 							new File(
-									"C:\\src\\Java\\Eclipse\\Nowe\\wordcounter\\files\\chart.jpg"),
+									"C:\\src\\Java\\Eclipse\\Nowe\\wordcounter\\files\\" + fileName + ".jpg"),
 							chart, 1000, 600);
 			System.out.println("File has been created");
 		} catch (IOException e) {
