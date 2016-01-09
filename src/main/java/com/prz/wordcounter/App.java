@@ -1,6 +1,8 @@
 package com.prz.wordcounter;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -26,16 +29,18 @@ import org.jfree.chart.JFreeChart;
  */
 public class App extends JFrame{
 	private static final long serialVersionUID = 1L;
-	private static final int windowHeight = 150;
-	private static final int windowWidth = 200;
+	private static final int windowHeight = 300;
+	private static int windowWidth = 300;
 	private static Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 
 	public static File selectedFile;
+	public JLabel fileNameLabel;
 	
 	public App() {
 		setBasicFrameSettings();
 		setButton();
 		SetMainLayout();
+		setVisible(true);
 	}
 	
 	public File getSelectedFile() {
@@ -44,7 +49,8 @@ public class App extends JFrame{
 
 	public JFileChooser createFileChooser() {
 		JFileChooser fileChooser = new JFileChooser();
-		JLabel fileNameLabel = new JLabel();
+
+		
 		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
 		int result = fileChooser.showOpenDialog(this);
 		if (result == JFileChooser.APPROVE_OPTION) {
@@ -53,30 +59,39 @@ public class App extends JFrame{
 		    
 		    if(selectedFile != null) {
 		    	fileNameLabel.setText("Selected file: " + selectedFile.getName());
-		    } else {
-		    	
 		    }
-		    
-		    fileNameLabel.setBounds(windowWidth/2 - 40, 120, 200, 30);
-		    this.add(fileNameLabel);
+			repaint();
 		}
 		
 		return fileChooser;
 	}
 	
 	public void SetMainLayout() {
+		Font font = new Font("Comic Sans MS", Font.BOLD, 24);
 		JLabel titleLabel = new JLabel("Word Counter");
-		titleLabel.setBounds(windowWidth/2 - 40, 30, 80, 30);
+		titleLabel.setBounds(95, 20, 200, 60);
+		titleLabel.setFont(font);
+		titleLabel.setForeground(new Color(61, 179, 229));
 		this.add(titleLabel);
 		
+		
+		ImageIcon logo = new ImageIcon("C:\\src\\Java\\Eclipse\\Nowe\\wordcounter\\files\\stats2d.png");
+		JLabel logoLabel = new JLabel(logo);
+		logoLabel.setBounds(20, 10, 64, 64);
+		add(logoLabel);
+		
 		JLabel chooseLabel = new JLabel("Choose file with data:");
-		chooseLabel .setBounds(windowWidth/2 - 40, 60, 80, 30);
+		chooseLabel .setBounds(100, 80, 120, 30);
 		this.add(chooseLabel );
+		
+		fileNameLabel = new JLabel();
+		fileNameLabel.setBounds(100, 160, 150, 30);
+		this.add(fileNameLabel);
 	}
 	
 	public void setButton() {
 		JButton browseButton = new JButton("Browse");
-		browseButton.setBounds(windowWidth/2 - browseButton.getWidth()/2, 90, 100, 30);
+		browseButton.setBounds(110, 120, 100, 30);
 		browseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 					createFileChooser();
@@ -85,7 +100,7 @@ public class App extends JFrame{
 		
 		
 		JButton generateButton = new JButton("Generate chart");
-		generateButton.setBounds(windowWidth/2 - generateButton.getWidth()/2, 200, 150, 30);
+		generateButton.setBounds(85, 200, 150, 30);
 		generateButton.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
@@ -100,11 +115,10 @@ public class App extends JFrame{
 	
 	public void setBasicFrameSettings() {
 		setSize(windowHeight, windowWidth);
-		setVisible(true);
 		setTitle("Word Counter");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
-		setMinimumSize(new Dimension(500, 400));
+		setMinimumSize(new Dimension(300, 300));
 		setResizable(false);
 		setLayout(null);
 		
