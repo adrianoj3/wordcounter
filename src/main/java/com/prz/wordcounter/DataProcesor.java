@@ -20,7 +20,9 @@ public class DataProcesor {
 	 */
 	public List<String> splitInputIntoWords(String inputString) {
 		List<String> allWords = new ArrayList<String>();
-		String[] arrayOfWords = inputString.split(" |\\.|\\,|\\:|\\!|\\?|\\'|\"");
+		// Dzielenie wyrazu. Argument funkcji split ma postaæ \\znakDzielacyWyraz | \\znakDzielacyWyraz
+		// Do znakow zastosowana jest alternatywa w postaci |
+		String[] arrayOfWords = inputString.split(" |\\.|\\,|\\:|\\!|\\?|\\'|\"|\\||\\<|\\<|\\-|\\[|\\]|\\*|\\+|\\;|\\{|\\}|\\_|\\=|\\(|\\)|\\\t|\\—");
 		allWords = Arrays.asList(arrayOfWords);
 
 		ArrayList<String> finalWordsList = new ArrayList<String>();

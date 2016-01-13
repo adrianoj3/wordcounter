@@ -46,7 +46,8 @@ public class BarChart {
 			ChartUtilities
 					.saveChartAsJPEG(
 							new File(
-									"C:\\src\\Java\\Eclipse\\Nowe\\wordcounter\\files\\" + fileName + ".jpg"),
+//									"C:\\src\\Java\\Eclipse\\Nowe\\wordcounter\\files\\" + fileName + ".jpg"),
+									".\\" + fileName + ".jpg"),
 							chart, 1000, 600);
 			System.out.println("File has been created");
 		} catch (IOException e) {

@@ -55,7 +55,7 @@ public class App extends JFrame{
 		int result = fileChooser.showOpenDialog(this);
 		if (result == JFileChooser.APPROVE_OPTION) {
 		    selectedFile = fileChooser.getSelectedFile();
-		    System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+//		    System.out.println("Selected file: " + selectedFile.getAbsolutePath());
 		    
 		    if(selectedFile != null) {
 		    	fileNameLabel.setText("Selected file: " + selectedFile.getName());
@@ -81,17 +81,17 @@ public class App extends JFrame{
 		add(logoLabel);
 		
 		JLabel chooseLabel = new JLabel("Choose file with data:");
-		chooseLabel .setBounds(100, 80, 120, 30);
+		chooseLabel .setBounds(95, 80, 120, 30);
 		this.add(chooseLabel );
 		
 		fileNameLabel = new JLabel();
-		fileNameLabel.setBounds(100, 160, 150, 30);
+		fileNameLabel.setBounds(95, 160, 150, 30);
 		this.add(fileNameLabel);
 	}
 	
 	public void setButton() {
 		JButton browseButton = new JButton("Browse");
-		browseButton.setBounds(110, 120, 100, 30);
+		browseButton.setBounds(105, 120, 100, 30);
 		browseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 					createFileChooser();
@@ -100,7 +100,7 @@ public class App extends JFrame{
 		
 		
 		JButton generateButton = new JButton("Generate chart");
-		generateButton.setBounds(85, 200, 150, 30);
+		generateButton.setBounds(80, 200, 150, 30);
 		generateButton.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
@@ -121,7 +121,7 @@ public class App extends JFrame{
 		setMinimumSize(new Dimension(300, 300));
 		setResizable(false);
 		setLayout(null);
-		
+		this.getContentPane().setBackground(Color.LIGHT_GRAY);
 		try {
 		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 		        if ("Nimbus".equals(info.getName())) {
@@ -145,10 +145,13 @@ public class App extends JFrame{
 			wordsList = dataProcesor.splitInputIntoWords(data);
 			statistics = dataProcesor.countWords((ArrayList<String>) wordsList);
 			JFreeChart chart = chartCreator.createBarChart(statistics);
-			new ChartGUI(chart);
+			new ChartGUI(chart);			
 		} else {
 			JOptionPane.showMessageDialog(this, "Choose the file first");
 		}
+		
+		for(String item: wordsList) 
+			System.out.println(item);
 	}
 
 	
